@@ -1,29 +1,20 @@
 <?php
-
-$target_dir = "/var/www/html/uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-
-if (!file_exists($target_dir)) {
-    mkdir($target_dir, 0755, true);
-}
-
-if (isset($_POST["submit"])) {
-    $uploadOk = 1;
-    $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-    if ($fileType != "txt") {
-        echo "Sorry, only TXT files are allowed.";
-        $uploadOk = 0;
-    }
-
-    if ($uploadOk == 0) {
-        echo "Sorry, your file was not uploaded.";
-    } else {
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            echo "The file ". htmlspecialchars(basename($_FILES["fileToUpload"]["name"])). " has been uploaded.";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_FILES['file'])) {
+        $file = $_FILES['file'];
+        if ($file['error'] == UPLOAD_ERR_OK) {
+            $upload_dir = '/var/www/html/uploads/';
+            $upload_file = $upload_dir . basename($file['name']);
+            if (move_uploaded_file($file['tmp_name'], $upload_file)) {
+                echo 'File successfully uploaded.';
+            } else {
+                echo 'Failed to move uploaded file.';
+            }
         } else {
-            echo "Sorry, there was an error uploading your file.";
+            echo 'File upload error: ' . $file['error'];
         }
+    } else {
+        echo 'No file uploaded.';
     }
 }
 ?>
