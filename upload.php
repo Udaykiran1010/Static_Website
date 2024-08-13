@@ -1,7 +1,7 @@
 <?php
 // Function to log messages to logs.txt
 function log_message($message) {
-    $log_file = '/home/ec-2user/log/logs.txt';
+    $log_file = '/home/ec2-user/log/logs.txt';
     $timestamp = date('Y-m-d H:i:s');
     $formatted_message = "[{$timestamp}] {$message}\n";
     file_put_contents($log_file, $formatted_message, FILE_APPEND);
